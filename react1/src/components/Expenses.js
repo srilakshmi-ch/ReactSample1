@@ -10,18 +10,25 @@ function Expenses(props)
     {
        setSelectedYear(year);
     
-        
     }
-    return (
+    const filteredExpenses = props.expenses.filter(expense => {
+        return expense.date.getFullYear().toString() === selectedYear;
+      });
+      let contentExpenses=<p className="noexpense">No Expenses</p>
+       if(filteredExpenses.length>0)
+       {
+           contentExpenses=filteredExpenses.map(expense => 
+            <ExpenseItem 
+                 key={expense.id}
+                 title={expense.title} 
+                 amount={expense.amount} 
+                 date={expense.date}/>
+         );
+       }
+      return (
         <Card className="expenses">
             <ExpensesFilter onSaveYear={saveYearHandler} year={selectedYear}></ExpensesFilter>
-            {props.expenses.map(expense => 
-               <ExpenseItem 
-                    key={expense.id}
-                    title={expense.title} 
-                    amount={expense.amount} 
-                    date={expense.date}/>
-            )}
+           {contentExpenses}
             {/* <ExpenseItem title={props.expenses[0].title} amount={props.expenses[0].amount} date={props.expenses[0].date}></ExpenseItem>
             <ExpenseItem title={props.expenses[1].title} amount={props.expenses[1].amount} date={props.expenses[1].date}></ExpenseItem>
             <ExpenseItem title={props.expenses[2].title} amount={props.expenses[2].amount} date={props.expenses[2].date}></ExpenseItem>
